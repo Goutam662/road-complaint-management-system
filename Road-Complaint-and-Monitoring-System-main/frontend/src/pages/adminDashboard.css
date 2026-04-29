@@ -1,0 +1,740 @@
+/* color theme: maroon (#800000), white, light gray (#f4f4f4) */
+.admin-dashboard {
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Admin Overview Panel */
+.admin-dashboard {
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background: #edf2f8;
+}
+
+.dashboard-hero {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.hero-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.8rem 1.7rem;
+  box-shadow: 0 16px 40px rgba(10, 40, 80, 0.08);
+}
+
+.hero-copy {
+  max-width: 780px;
+}
+
+.hero-label {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #0f3d84;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  font-size: 2.1rem;
+  color: #04275c;
+  line-height: 1.05;
+}
+
+.hero-copy p {
+  margin-top: 0.85rem;
+  color: #58616d;
+  font-size: 1rem;
+  max-width: 720px;
+}
+
+.hero-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: center;
+}
+
+.hero-action-bar .btn {
+  min-width: 170px;
+  padding: 0.85rem 1.25rem;
+  border-radius: 999px;
+  background: #04275c;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+.hero-action-bar .btn:hover {
+  background: #0f3d84;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.metric-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid rgba(15, 63, 132, 0.1);
+  box-shadow: 0 14px 32px rgba(10, 40, 80, 0.06);
+}
+
+.metric-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #04275c;
+}
+
+.metric-label {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #556e8b;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Admin Profile Card */
+.admin-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  /* use green gradient matching main site theme */
+  background: linear-gradient(135deg, #007b5e 0%, #009572 100%);
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 123, 94, 0.2);
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.profile-icon {
+  font-size: 2.5rem;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.admin-name {
+  color: #ffd700;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.profile-subtitle {
+  margin: 0.3rem 0 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.profile-role {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.role-text {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.top-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  margin-bottom: 2rem;
+}
+
+.top-text h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #800000;
+}
+
+.top-text p {
+  margin: 0.3rem 0 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.btn-logout {
+  background: #800000;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-logout:hover {
+  background: #5c0000;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-secondary {
+  background: #f4f4f4;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #e0e0e0;
+}
+
+.btn-primary {
+  background: #007b5e;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #005a48;
+}
+
+.complaints-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.filter-card,
+.table-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filters input,
+.filters select {
+  padding: 0.9rem 1rem;
+  border: 1px solid #d4d8df;
+  border-radius: 10px;
+  flex: 1 1 180px;
+  background: #f8fafc;
+  color: #0f3d84;
+}
+
+.filters input {
+  min-width: 280px;
+}
+
+.filters button {
+  flex: 0 0 auto;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #04275c;
+}
+
+.btn-export {
+  background: #0f3d84;
+  color: #fff;
+  border: 1px solid transparent;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+}
+
+.btn-export:hover {
+  background: #04275c;
+}
+
+.complaints-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.complaints-table th,
+.complaints-table td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.complaints-table th {
+  background: #f9f9f9;
+  font-weight: 600;
+  color: #333;
+}
+
+.complaints-table tr:hover {
+  background: #fafafa;
+}
+
+.status-badge {
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;}
+
+.view-complaints-button {
+  margin-top: 2rem;
+}
+
+.view-complaints-button .btn-primary {
+  background: #800000;
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.view-complaints-button .btn-primary:hover {
+  background: #660000;
+}
+
+.badge-pending {
+  background: #ffc107;
+  color: #333;
+}
+
+.badge-progress {
+  background: #17a2b8;
+}
+
+.badge-resolved {
+  background: #28a745;
+}
+
+.actions-cell .btn-small {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-small {
+  background: #f4f4f4;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn-small:hover {
+  background: #e0e0e0;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+.thumb {
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+
+.thumb:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+.no-thumb {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+/* Modal viewer */
+.img-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.img-modal {
+  position: relative;
+  background: transparent;
+  padding: 1rem;
+  border-radius: 8px;
+  max-width: 90vw;
+  max-height: 90vh;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+.img-modal img {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 6px;
+}
+
+.location-modal {
+  position: relative;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  width: min(720px, 92vw);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+.location-modal h3 {
+  margin: 0 0 0.75rem;
+  color: #333;
+}
+
+.img-modal-close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #fff;
+  color: #333;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.img-modal-close:hover {
+  background: #f4f4f4;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal.large-modal {
+  max-width: 700px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  background: linear-gradient(135deg, #800000 0%, #660000 100%);
+  color: #fff;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.modal-close:hover {
+  transform: scale(1.1);
+}
+
+.modal-content {
+  padding: 1.5rem;
+}
+
+.modal-form {
+  padding: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #800000;
+  box-shadow: 0 0 0 3px rgba(128, 0, 0, 0.1);
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 150px;
+  margin-bottom: 0;
+}
+
+.btn-create {
+  align-self: flex-end;
+  margin-top: 1.5rem;
+}
+
+.create-admin-section {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.create-admin-section h3 {
+  margin-top: 0;
+  color: #800000;
+}
+
+.create-admin-form {
+  margin-top: 1rem;
+}
+
+.admins-list-section h3 {
+  color: #800000;
+  margin-bottom: 1rem;
+}
+
+.admins-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admins-table thead {
+  background: #f4f4f4;
+}
+
+.admins-table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+.admins-table td {
+  padding: 0.75rem;
+  color: #333;
+  border-bottom: 1px solid #eee;
+}
+
+.admins-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #800000;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.modal-actions button {
+  flex: 1;
+}
+
+.success-message {
+  background: #d4edda;
+  color: #155724;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #28a745;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #dc3545;
+}
+
+.btn-small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .modal {
+    max-width: 95%;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-row .btn-create {
+    width: 100%;
+  }
+}
+
+/* Complaint detail page styling */
+.complaint-detail-page {
+  padding: 2rem;
+}
+.complaint-detail-page .detail-section p {
+  margin: 0.5rem 0;
+}
+.complaint-detail-page .detail-image img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+.complaint-detail-page .timeline {
+  margin-top: 1.5rem;
+}
+.complaint-detail-page .timeline ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+}
