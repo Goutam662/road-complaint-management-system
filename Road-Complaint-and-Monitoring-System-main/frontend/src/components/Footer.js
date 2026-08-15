@@ -1,14 +1,16 @@
 import React from 'react';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { settings } = useSiteSettings();
 
   return (
     <footer className="gov-footer">
       <div className="gov-footer-top">
         <div className="gov-footer-column">
           <h4>About Portal</h4>
-          <p>National Road Complaint Portal is the official platform for citizens to report road maintenance issues and track government action.</p>
+          <p>{settings.siteName} is the official platform for citizens to report road maintenance issues and track government action.</p>
         </div>
         <div className="gov-footer-column">
           <h4>Quick Access</h4>
@@ -24,13 +26,13 @@ const Footer = () => {
         </div>
         <div className="gov-footer-column">
           <h4>Official Contacts</h4>
-          <a href="mailto:support@roadcomplaint.gov.in">support@roadcomplaint.gov.in</a>
-          <a href="tel:+911234567890">+91 12345 67890</a>
-          <span>Ministry of Road Transport & Highways</span>
+          <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a>
+          <a href={`tel:${settings.contactPhone}`}>{settings.contactPhone}</a>
+          <span>{settings.footerText}</span>
         </div>
       </div>
       <div className="gov-footer-bottom">
-        <p>&copy; {currentYear} National Road Complaint Portal | Ministry of Road Transport & Highways</p>
+        <p>&copy; {currentYear} {settings.siteName} | {settings.footerText}</p>
         <p>Designed and developed by Goutam Meenia</p>
       </div>
     </footer>

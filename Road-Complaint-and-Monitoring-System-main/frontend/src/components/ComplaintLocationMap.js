@@ -25,6 +25,39 @@ const haversine = (lat1, lng1, lat2, lng2) => {
   return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 };
 
+const normalizePathData = (value) => {
+  if (Array.isArray(value)) {
+    return value
+      .map((point) => {
+        if (!point) return null;
+        const lat = Number(point.lat ?? point.latitude ?? (Array.isArray(point) ? point[0] : undefined));
+        const lng = Number(point.lng ?? point.longitude ?? (Array.isArray(point) ? point[1] : undefined));
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+        return { lat, lng };
+      })
+      .filter(Boolean);
+  }
+
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return normalizePathData(parsed);
+    } catch (err) {
+      return [];
+    }
+  }
+
+  if (value && typeof value === 'object') {
+    const lat = Number(value.lat ?? value.latitude);
+    const lng = Number(value.lng ?? value.longitude);
+    if (Number.isFinite(lat) && Number.isFinite(lng)) {
+      return [{ lat, lng }];
+    }
+  }
+
+  return [];
+};
+
 const ComplaintLocationMap = ({ path = [], routePath = [], lat, lng, height = 280 }) => {
   // Prioritize routePath (actual road route), fallback to path or single coordinates
   const displayPath = useMemo(() => {

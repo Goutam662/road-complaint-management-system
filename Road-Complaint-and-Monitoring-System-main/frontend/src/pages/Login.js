@@ -47,50 +47,63 @@ const Login = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-header">
-          <h1>User Login</h1>
-          <p>Access your complaint dashboard</p>
+      <div className="auth-shell">
+        <div className="auth-visual-panel">
+          <span className="eyebrow">Citizen portal</span>
+          <h2>Track road issues with confidence.</h2>
+          <p>Log in to review submitted complaints, follow repair progress, and stay informed about local infrastructure updates.</p>
+          <ul>
+            <li>Real-time status tracking</li>
+            <li>Photo-based complaint reporting</li>
+            <li>Clear communication with local teams</li>
+          </ul>
         </div>
 
-        {serverError && <div className="alert alert-error">{serverError}</div>}
-
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email address"
-              required
-            />
-            {errors.email && <span className="error">{errors.email}</span>}
+        <div className="auth-container">
+          <div className="auth-header">
+            <h1>Welcome Back</h1>
+            <p>Access your complaint dashboard</p>
           </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              required
-            />
-            {errors.password && <span className="error">{errors.password}</span>}
+          {serverError && <div className="alert alert-error">{serverError}</div>}
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className={`form-group ${errors.email ? 'error' : ''}`}>
+              <label>Email Address</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email address"
+                required
+              />
+              {errors.email && <span className="error">{errors.email}</span>}
+            </div>
+
+            <div className={`form-group ${errors.password ? 'error' : ''}`}>
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                required
+              />
+              {errors.password && <span className="error">{errors.password}</span>}
+            </div>
+
+            <button type="submit" disabled={loading} className="btn btn-primary">
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
+          </form>
+
+          <div className="auth-footer">
+            <p><Link to="/forgot-password">Forgot your password?</Link></p>
+            <p>Don't have an account? <Link to="/register">Register here</Link></p>
+            <p><Link to="/admin/login">Admin? Login here</Link></p>
           </div>
-
-          <button type="submit" disabled={loading} className="btn btn-primary">
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        <div className="auth-footer">
-          <p><Link to="/forgot-password">Forgot your password?</Link></p>
-          <p>Don't have an account? <Link to="/register">Register here</Link></p>
-          <p><Link to="/admin/login">Admin? Login here</Link></p>
         </div>
       </div>
     </div>

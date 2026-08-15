@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 const Admin = require("../models/Admin");
 const Complaint = require("../models/Complaint");
+const ContactMessage = require("../models/ContactMessage");
 const User = require("../models/User");
 
 const router = express.Router();
@@ -173,6 +174,20 @@ router.get("/complaints/:id", adminAuthMiddleware, async (req, res) => {
   }
 });
 
+// Get contact messages (admin only)
+router.get("/contact-messages", adminAuthMiddleware, async (req, res) => {
+  try {
+    const messages = await ContactMessage.findAll({
+      order: [["createdAt", "DESC"]]
+    });
+
+    res.json({ messages });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: "Failed to fetch contact messages" });
+  }
+});
+
 // Update complaint status (admin only)
 router.put("/complaints/:id/status", adminAuthMiddleware, async (req, res) => {
   try {
@@ -238,6 +253,21 @@ router.get("/stats", adminAuthMiddleware, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(400).json({ error: "Failed to fetch statistics" });
+  }
+});
+
+// Get all registered users (admin only)
+router.get("/users", adminAuthMiddleware, async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ["id", "name", "email", "mobile", "village", "isVerified", "createdAt"],
+      order: [["createdAt", "DESC"]]
+    });
+
+    res.json({ users });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: "Failed to fetch users" });
   }
 });
 

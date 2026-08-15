@@ -63,6 +63,60 @@ router.get("/test-email", async (req, res) => {
   }
 });
 
+// Create test user for development/testing
+router.post("/create-test-user", async (req, res) => {
+  try {
+    const testUser = {
+      name: "Test User",
+      email: "test@example.com",
+      mobile: "9999999999",
+      village: "Test Village",
+      password: "test@123",
+      isVerified: true
+    };
+
+    // Check if test user already exists
+    let user = await User.findOne({
+      where: { email: testUser.email }
+    });
+
+    if (user) {
+      return res.json({
+        message: "Test user already exists",
+        email: testUser.email,
+        password: testUser.password,
+        note: "Use these credentials to login"
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(testUser.password, 10);
+
+    // Create user
+    user = await User.create({
+      name: testUser.name,
+      email: testUser.email,
+      mobile: testUser.mobile,
+      village: testUser.village,
+      password: hashedPassword,
+      isVerified: true
+    });
+
+    return res.json({
+      message: "Test user created successfully",
+      email: testUser.email,
+      password: testUser.password,
+      note: "Use these credentials to login. This endpoint is for development only."
+    });
+  } catch (error) {
+    console.error("Error creating test user:", error);
+    return res.status(500).json({
+      error: "Failed to create test user",
+      message: error.message
+    });
+  }
+});
+
 const generateOtp = () => String(Math.floor(100000 + Math.random() * 900000));
 const normalizeEmail = (email) => String(email || "").trim().toLowerCase();
 

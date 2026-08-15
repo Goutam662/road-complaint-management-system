@@ -43,16 +43,35 @@ const Help = () => {
   return (
     <div className="help-page">
       <div className="page-header">
+        <p className="dashboard-kicker">Support center</p>
         <h1>Help & Support</h1>
         <p>Find answers to frequently asked questions</p>
       </div>
 
       <div className="help-container">
+        <div className="help-support-grid">
+          <div className="mini-info-box info-box-large">
+            <strong>24/7</strong>
+            <span>Public support guidance</span>
+          </div>
+          <div className="mini-info-box info-box-large">
+            <strong>Fast</strong>
+            <span>Quick complaint assistance</span>
+          </div>
+          <div className="mini-info-box info-box-large">
+            <strong>Trusted</strong>
+            <span>Transparent service updates</span>
+          </div>
+        </div>
+
         <section className="faq-section">
           <h2>Frequently Asked Questions</h2>
           <div className="faq-list">
             {faqs.map(faq => (
-              <div key={faq.id} className="faq-item">
+              <div
+                key={faq.id}
+                className={`faq-item ${expanded[faq.id] ? 'open' : ''}`}
+              >
                 <h3 onClick={() => toggleFAQ(faq.id)} className="faq-question">
                   {faq.question}
                   <span className="faq-toggle">{expanded[faq.id] ? '−' : '+'}</span>

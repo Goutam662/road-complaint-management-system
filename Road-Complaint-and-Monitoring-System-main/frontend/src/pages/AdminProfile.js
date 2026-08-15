@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { adminService } from '../services/api';
@@ -18,6 +18,7 @@ const AdminProfile = () => {
   const { logout: doLogout } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   const logout = () => {
     doLogout();
@@ -37,7 +38,7 @@ const AdminProfile = () => {
     return () => window.removeEventListener('popstate', onPop);
   }, [admin, location.pathname]);
 
-  const fetchAdmins = async () => {
+  const fetchAdmins = useCallback(async () => {
     try {
       const data = await adminService.getAdmins();
       setAdmins(data.admins || []);
@@ -45,36 +46,36 @@ const AdminProfile = () => {
       console.error('fetch admins', err);
       setError('Failed to fetch admin users');
     }
-  };
+  }, []);
 
-  const openPasswordModal = () => {
+  const openPasswordModal = useCallback(() => {
     setPasswordForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
     setMessage('');
     setError('');
     setShowPasswordModal(true);
-  };
+  }, []);
 
-  const closePasswordModal = () => {
+  const closePasswordModal = useCallback(() => {
     setShowPasswordModal(false);
     setPasswordForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
     setMessage('');
     setError('');
-  };
+  }, []);
 
-  const openAdminModal = () => {
+  const openAdminModal = useCallback(() => {
     setAdminForm({ username: '', password: '', confirmPassword: '' });
     setMessage('');
     setError('');
     fetchAdmins();
     setShowAdminModal(true);
-  };
+  }, [fetchAdmins]);
 
-  const closeAdminModal = () => {
+  const closeAdminModal = useCallback(() => {
     setShowAdminModal(false);
     setAdminForm({ username: '', password: '', confirmPassword: '' });
     setMessage('');
     setError('');
-  };
+  }, []);
 
   const handlePasswordChange = e => {
     const { name, value } = e.target;
@@ -158,6 +159,16 @@ const AdminProfile = () => {
       setError(err.message || 'Failed to delete admin');
     }
   };
+
+  React.useEffect(() => {
+    const section = searchParams.get('section');
+
+    if (section === 'password') {
+      openPasswordModal();
+    } else if (section === 'users') {
+      openAdminModal();
+    }
+  }, [searchParams, openPasswordModal, openAdminModal]);
 
   React.useEffect(() => {
     const load = async () => {

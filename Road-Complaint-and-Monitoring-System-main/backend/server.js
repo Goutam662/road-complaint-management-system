@@ -11,6 +11,7 @@ const authRoutes = require("./routes/authRoutes");
 const complaintRoutes = require("./routes/complaintRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 const fs = require("fs");
 const app = express();
@@ -123,6 +124,7 @@ const start = async () => {
   app.use("/api/complaints", complaintRoutes);
   app.use("/api/admin", adminRoutes);
   app.use("/api/chat", chatRoutes);
+  app.use("/api/contact", contactRoutes);
 
   // Always return JSON for unknown API routes
   app.use("/api", (req, res) => {

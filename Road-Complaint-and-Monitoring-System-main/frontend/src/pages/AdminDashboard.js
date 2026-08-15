@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminService, API_BASE_URL } from '../services/api';
 import ComplaintLocationMap from '../components/ComplaintLocationMap';
@@ -21,6 +21,44 @@ const AdminDashboard = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [selectedComplaintPath, setSelectedComplaintPath] = useState([]);
   const [selectedComplaintRoutePath, setSelectedComplaintRoutePath] = useState([]);
+  const [activeStatus, setActiveStatus] = useState('');
+
+  const getComplaintId = (item) => {
+    return item.id || item._id || item.dataValues?.id || item.dataValues?._id || '';
+  };
+
+  const normalizePathData = (value) => {
+    if (Array.isArray(value)) {
+      return value
+        .map((point) => {
+          if (!point) return null;
+          const lat = Number(point.lat ?? point.latitude ?? (Array.isArray(point) ? point[0] : undefined));
+          const lng = Number(point.lng ?? point.longitude ?? (Array.isArray(point) ? point[1] : undefined));
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+          return { lat, lng };
+        })
+        .filter(Boolean);
+    }
+
+    if (typeof value === 'string') {
+      try {
+        const parsed = JSON.parse(value);
+        return normalizePathData(parsed);
+      } catch (err) {
+        return [];
+      }
+    }
+
+    if (value && typeof value === 'object') {
+      const lat = Number(value.lat ?? value.latitude);
+      const lng = Number(value.lng ?? value.longitude);
+      if (Number.isFinite(lat) && Number.isFinite(lng)) {
+        return [{ lat, lng }];
+      }
+    }
+
+    return [];
+  };
 
   const handleChange = e => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -28,19 +66,25 @@ const AdminDashboard = () => {
 
   const clearFilters = () => {
     setFilters({ location: '', status: '' });
+    setActiveStatus('');
     fetchComplaints();
   };
 
-  const fetchComplaints = async () => {
+  const handleStatusTab = (status) => {
+    setActiveStatus(status);
+    setFilters({ ...filters, status });
+  };
+
+  const fetchComplaints = useCallback(async () => {
     try {
       const data = await adminService.getComplaints(filters);
       setComplaints(data.complaints || []);
     } catch (err) {
       console.error('fetch complaints', err);
     }
-  };
+  }, [filters]);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const data = await adminService.getStats();
       setStats({
@@ -53,9 +97,7 @@ const AdminDashboard = () => {
     } catch (err) {
       console.error('fetch stats', err);
     }
-  };
-
-  const getComplaintId = (complaint) => complaint.id || complaint._id;
+  }, []);
 
   const exportCSV = () => {
     if (complaints.length === 0) return;
@@ -66,7 +108,7 @@ const AdminDashboard = () => {
       c.user?.mobile || '',
       c.user?.village || '',
       c.location || '',
-      c.status,
+      c.status || '',
       c.flags || ''
     ]);
     const csv = [header, ...rows]
@@ -82,19 +124,31 @@ const AdminDashboard = () => {
   };
 
   const changeStatus = async (id, status) => {
+    if (!id) {
+      console.error('Missing complaint ID for status update');
+      return;
+    }
+
     try {
       await adminService.updateComplaintStatus(id, status);
       fetchComplaints();
+      fetchStats(); // Refresh stats after status change
     } catch (err) {
       console.error('status update', err);
     }
   };
 
   const deleteComplaint = async (id) => {
+    if (!id) {
+      console.error('Missing complaint ID for delete');
+      return;
+    }
+
     if (!window.confirm('Are you sure you want to delete this complaint?')) return;
     try {
       await adminService.deleteComplaint(id);
       fetchComplaints();
+      fetchStats(); // Refresh stats after delete
     } catch (err) {
       console.error('delete complaint', err);
     }
@@ -114,16 +168,12 @@ const AdminDashboard = () => {
   };
 
   const openMap = (complaint) => {
-    const roadPath = Array.isArray(complaint.path)
-      ? complaint.path
-      : [];
-    const actualRoadRoute = Array.isArray(complaint.routePath)
-      ? complaint.routePath
-      : [];
-    const fallbackLat = complaint.lat ?? complaint.latitude;
-    const fallbackLng = complaint.lng ?? complaint.longitude;
+    const roadPath = normalizePathData(complaint.path);
+    const actualRoadRoute = normalizePathData(complaint.routePath);
+    const fallbackLat = Number(complaint.lat ?? complaint.latitude ?? roadPath[0]?.lat ?? actualRoadRoute[0]?.lat);
+    const fallbackLng = Number(complaint.lng ?? complaint.longitude ?? roadPath[0]?.lng ?? actualRoadRoute[0]?.lng);
 
-    if (roadPath.length === 0 && actualRoadRoute.length === 0 && (typeof fallbackLat !== 'number' || typeof fallbackLng !== 'number')) {
+    if (roadPath.length === 0 && actualRoadRoute.length === 0 && (!Number.isFinite(fallbackLat) || !Number.isFinite(fallbackLng))) {
       return;
     }
 
@@ -141,6 +191,7 @@ const AdminDashboard = () => {
   const closeLocationModal = () => {
     setShowLocationModal(false);
     setSelectedComplaintPath([]);
+    setSelectedComplaintRoutePath([]);
   };
 
   const renderStatus = status => {
@@ -156,7 +207,7 @@ const AdminDashboard = () => {
   React.useEffect(() => {
     fetchComplaints();
     fetchStats();
-  }, []);
+  }, [fetchComplaints, fetchStats]);
 
   const serverBase = API_BASE_URL.replace(/\/api$/, '');
 
@@ -171,8 +222,11 @@ const AdminDashboard = () => {
           </div>
           <div className="hero-action-bar">
             <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin')}>Complaint Dashboard</button>
-            <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/profile')}>Change Password</button>
-            <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/profile')}>Manage Users</button>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/reports')}>Reports</button>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/users')}>Users</button>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/settings')}>Website Settings</button>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/profile?section=password')}>Change Password</button>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/admin/contact-messages')}>Contact Messages</button>
             <button type="button" className="btn btn-secondary" onClick={() => navigate('/map')}>Map View</button>
           </div>
         </div>
@@ -215,12 +269,18 @@ const AdminDashboard = () => {
               value={filters.location}
               onChange={handleChange}
             />
-            <select name="status" value={filters.status} onChange={handleChange}>
-              <option value="">All Status</option>
-              <option value="Pending">Pending</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Resolved">Resolved</option>
-            </select>
+            <div className="status-tabs">
+              {['', 'Pending', 'In Progress', 'Resolved'].map((status) => (
+                <button
+                  key={status || 'all'}
+                  type="button"
+                  className={`tab-btn ${activeStatus === status ? 'tab-active' : ''}`}
+                  onClick={() => handleStatusTab(status)}
+                >
+                  {status || 'All'}
+                </button>
+              ))}
+            </div>
             <button type="submit" className="btn btn-primary">Search</button>
             <button type="button" className="btn btn-secondary" onClick={clearFilters}>Clear</button>
           </form>
@@ -244,9 +304,10 @@ const AdminDashboard = () => {
             <tbody>
               {complaints.map(item => {
                 const complaintId = getComplaintId(item);
+
                 return (
-                  <tr key={complaintId}>
-                    <td>{complaintId}</td>
+                  <tr key={complaintId || item.location || Math.random()}>
+                    <td>{complaintId || 'N/A'}</td>
                     <td>
                       {item.image ? (
                         <img
@@ -266,15 +327,17 @@ const AdminDashboard = () => {
                     <td>{renderStatus(item.status)}</td>
                     <td>{item.flags}</td>
                     <td className="actions-cell">
-                      <button onClick={() => viewImage(item.image)} className="btn btn-small">View Image</button>
-                      <button onClick={() => changeStatus(complaintId, 'Resolved')} className="btn btn-small">Resolve</button>
-                      <button onClick={() => deleteComplaint(complaintId)} className="btn btn-small btn-danger">Delete</button>
+                      <button type="button" onClick={() => viewImage(item.image)} className="btn btn-small btn-secondary">View Image</button>
+                      <button type="button" onClick={() => changeStatus(complaintId, 'Resolved')} className="btn btn-small btn-secondary">Resolve</button>
                       <button
+                        type="button"
+                        title="Open the complaint location on the map"
                         onClick={() => openMap(item)}
-                        className="btn btn-small"
+                        className="btn btn-small btn-info"
                       >
-                        Map
+                        🚩 Map
                       </button>
+                      <button type="button" onClick={() => deleteComplaint(complaintId)} className="btn btn-small btn-danger">Delete</button>
                     </td>
                   </tr>
                 );

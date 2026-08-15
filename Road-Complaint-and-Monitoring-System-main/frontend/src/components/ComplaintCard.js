@@ -18,7 +18,10 @@ const ComplaintCard = ({ complaint, onClick }) => {
   return (
     <div className="complaint-card" onClick={onClick}>
       <div className="complaint-header">
-        <h3>Complaint #{complaint._id || complaint.id}</h3>
+        <div>
+          <p className="complaint-kicker">Complaint</p>
+          <h3>#{complaint._id || complaint.id}</h3>
+        </div>
         <span 
           className="status-badge" 
           style={{ background: getStatusColor(complaint.status) }}
@@ -26,10 +29,19 @@ const ComplaintCard = ({ complaint, onClick }) => {
           {complaint.status}
         </span>
       </div>
-      
+
       <div className="complaint-body">
-        <p className="complaint-location">📍 {complaint.location}</p>
-        <p className="complaint-date">📅 {formatDate(complaint.createdAt)}</p>
+        <p className="complaint-location">
+          <span className="complaint-icon">📍</span>
+          {complaint.location}
+        </p>
+        <p className="complaint-date">
+          <span className="complaint-icon">📅</span>
+          {formatDate(complaint.createdAt)}
+        </p>
+        {complaint.description && (
+          <p className="complaint-description">{complaint.description.slice(0, 110)}{complaint.description.length > 110 ? '...' : ''}</p>
+        )}
       </div>
     </div>
   );

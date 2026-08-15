@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { complaintService } from '../services/api';
 import ComplaintCard from '../components/ComplaintCard';
@@ -58,8 +58,9 @@ const Dashboard = () => {
   return (
     <div className="dashboard-page">
       <div className="dashboard-header">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <div className="dashboard-topbar">
           <div>
+            <p className="dashboard-kicker">Citizen dashboard</p>
             <h1>Welcome, {user?.name || 'User'}!</h1>
             <p>Manage and track all your road complaints from here</p>
           </div>
@@ -69,9 +70,23 @@ const Dashboard = () => {
             </div>
           )}
         </div>
+
+        <div className="dashboard-summary">
+          <div className="summary-card summary-pending">
+            <span>Total complaints</span>
+            <strong>{complaints.length}</strong>
+          </div>
+          <div className="summary-card summary-progress">
+            <span>In progress</span>
+            <strong>{complaints.filter(c => c.status === 'In Progress').length}</strong>
+          </div>
+          <div className="summary-card summary-resolved">
+            <span>Resolved</span>
+            <strong>{complaints.filter(c => c.status === 'Resolved').length}</strong>
+          </div>
+        </div>
       </div>
 
-      {/* Filter Section */}
       <div className="filter-section">
         <div className="filter-controls">
           <select 
@@ -97,11 +112,10 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Complaints List */}
       <div className="complaints-section">
         <div className="section-header">
           <h2>Your Complaints</h2>
-          <Link to="/upload" className="btn btn-primary">+ Submit New Complaint</Link>
+          <a href="/upload" className="btn btn-primary">+ Submit New Complaint</a>
         </div>
 
         {loading ? (
@@ -119,7 +133,7 @@ const Dashboard = () => {
         ) : (
           <div className="no-data">
             <p>You haven't submitted any complaints yet.</p>
-            <Link to="/upload" className="btn btn-primary">Submit Your First Complaint</Link>
+            <a href="/upload" className="btn btn-primary">Submit Your First Complaint</a>
           </div>
         )}
       </div>

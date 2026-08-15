@@ -118,7 +118,7 @@ const Upload = () => {
         data.append('longitude', formData.lng);
       }
 
-      const response = await complaintService.uploadComplaint(data);
+      await complaintService.uploadComplaint(data);
       navigate('/dashboard');
     } catch (error) {
       setServerError(error.message || 'Upload failed');
@@ -131,6 +131,7 @@ const Upload = () => {
     <div className="upload-page">
       <div className="upload-container">
         <div className="upload-header">
+          <p className="dashboard-kicker">Road issue reporting</p>
           <h1>Submit Road Complaint</h1>
           <p>Report a road infrastructure issue in your area</p>
         </div>
@@ -142,7 +143,22 @@ const Upload = () => {
         {serverError && <div className="alert alert-error">{serverError}</div>}
 
         <form onSubmit={handleSubmit} className="upload-form">
-          <div className="form-group">
+          <div className="upload-help-row">
+            <div className="mini-info-box">
+              <strong>1.</strong>
+              <span>Add a clear photo</span>
+            </div>
+            <div className="mini-info-box">
+              <strong>2.</strong>
+              <span>Mark the location</span>
+            </div>
+            <div className="mini-info-box">
+              <strong>3.</strong>
+              <span>Describe the problem</span>
+            </div>
+          </div>
+
+          <div className={`form-group ${errors.image ? 'error' : ''}`}>
             <label>Photo of Road Issue *</label>
             <input
               type="file"
@@ -155,7 +171,7 @@ const Upload = () => {
             <p className="help-text">Maximum 5MB. JPG, PNG, GIF formats only.</p>
           </div>
 
-          <div className="form-group">
+          <div className={`form-group ${errors.location ? 'error' : ''}`}>
             <label>Location / Area Name *</label>
             <input
               type="text"
@@ -168,7 +184,7 @@ const Upload = () => {
             {errors.location && <span className="error">{errors.location}</span>}
           </div>
 
-          <div className="form-group">
+          <div className={`form-group ${errors.coords ? 'error' : ''}`}>
             <label>Select Exact Location on Map *</label>
             <LocationPicker
               selectedPath={formData.path}
@@ -178,7 +194,7 @@ const Upload = () => {
             {errors.coords && <span className="error">{errors.coords}</span>}
           </div>
 
-          <div className="form-group">
+          <div className={`form-group ${errors.description ? 'error' : ''}`}>
             <label>Description of Issue *</label>
             <textarea
               name="description"

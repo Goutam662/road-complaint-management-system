@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { complaintService } from '../services/api';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -97,16 +97,6 @@ const MapView = () => {
     }
   };
 
-  const filteredComplaints = useMemo(() => {
-    return complaints.filter((c) => {
-      const matchesLocation = searchLocation
-        ? c.location?.toLowerCase().includes(searchLocation.toLowerCase())
-        : true;
-      const matchesStatus = statusFilter ? c.status === statusFilter : true;
-      return matchesLocation && matchesStatus;
-    });
-  }, [complaints, searchLocation, statusFilter]);
-
   const handleSearch = () => {
     displayMarkers();
   };
@@ -147,23 +137,6 @@ const MapView = () => {
         <div className="legend-item">
           <span className="legend-color" style={{ background: '#4CAF50' }}></span> Resolved
         </div>
-      </div>
-
-      <div className="recent-complaints-view">
-        <h3>Recent Complaints in View</h3>
-        {filteredComplaints.length > 0 ? (
-          <div className="recent-complaints-list">
-            {filteredComplaints.slice(0, 5).map((complaint) => (
-              <div key={complaint._id || complaint.id} className="recent-complaint-item">
-                <p><strong>Status:</strong> {complaint.status}</p>
-                <p><strong>Date:</strong> {new Date(complaint.createdAt).toLocaleDateString()}</p>
-                <p><strong>Location:</strong> {complaint.location}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No complaints currently match the selected view.</p>
-        )}
       </div>
     </div>
   );

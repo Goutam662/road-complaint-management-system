@@ -4,20 +4,40 @@ const About = () => {
   return (
     <div className="about-page">
       <div className="page-header">
+        <p className="dashboard-kicker">Our mission</p>
         <h1>About Us</h1>
         <p>Learn more about the National Road Complaint System and our mission</p>
       </div>
 
       <div className="about-container">
-        <section className="about-section">
-          <h2>Our Mission</h2>
-          <p>To revolutionize infrastructure by empowering communities to maintain and improve their road networks using cutting-edge technology. We believe better roads lead to safer communities and enhanced quality of life.</p>
-        </section>
+        <div className="about-hero-grid">
+          <div className="about-story">
+            <section className="about-section">
+              <h2>Our Mission</h2>
+              <p>To revolutionize infrastructure by empowering communities to maintain and improve their road networks using cutting-edge technology. We believe better roads lead to safer communities and enhanced quality of life.</p>
+            </section>
 
-        <section className="about-section">
-          <h2>Our Vision</h2>
-          <p>To become the leading digital platform for infrastructure management, connecting citizens with local and national authorities through transparent, efficient, and technology-driven solutions.</p>
-        </section>
+            <section className="about-section">
+              <h2>Our Vision</h2>
+              <p>To become the leading digital platform for infrastructure management, connecting citizens with local and national authorities through transparent, efficient, and technology-driven solutions.</p>
+            </section>
+          </div>
+
+          <div className="about-stats-panel">
+            <div className="mini-info-box info-box-large">
+              <strong>Fast</strong>
+              <span>Faster complaint submission</span>
+            </div>
+            <div className="mini-info-box info-box-large">
+              <strong>Clear</strong>
+              <span>Transparent status updates</span>
+            </div>
+            <div className="mini-info-box info-box-large">
+              <strong>Safe</strong>
+              <span>Safer roads for every citizen</span>
+            </div>
+          </div>
+        </div>
 
         <section className="about-section">
           <h2>Key Features</h2>

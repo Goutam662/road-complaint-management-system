@@ -82,89 +82,102 @@ const Register = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-header">
-          <h1>Create Your Account</h1>
-          <p>Join the citizen complaint system today</p>
+      <div className="auth-shell">
+        <div className="auth-visual-panel">
+          <span className="eyebrow">Citizen registration</span>
+          <h2>Become part of the public service improvement process.</h2>
+          <p>Register to report road issues, upload supporting photos, and keep track of local maintenance work.</p>
+          <ul>
+            <li>Quick citizen registration</li>
+            <li>Location-aware complaint logs</li>
+            <li>Track repair progress</li>
+          </ul>
         </div>
 
-        {serverError && <div className="alert alert-error">{serverError}</div>}
+        <div className="auth-container">
+          <div className="auth-header">
+            <h1>Create Your Account</h1>
+            <p>Join the citizen complaint system today</p>
+          </div>
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-row">
-            <div className="form-group">
-              <label>Full Name *</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                required
-              />
-              {errors.name && <span className="error">{errors.name}</span>}
+          {serverError && <div className="alert alert-error">{serverError}</div>}
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-row">
+              <div className={`form-group ${errors.name ? 'error' : ''}`}>
+                <label>Full Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  required
+                />
+                {errors.name && <span className="error">{errors.name}</span>}
+              </div>
+
+              <div className={`form-group ${errors.mobile ? 'error' : ''}`}>
+                <label>Mobile Number *</label>
+                <input
+                  type="text"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleChange}
+                  placeholder="10-digit mobile number"
+                  required
+                />
+                {errors.mobile && <span className="error">{errors.mobile}</span>}
+              </div>
             </div>
 
-            <div className="form-group">
-              <label>Mobile Number *</label>
+            <div className={`form-group ${errors.village ? 'error' : ''}`}>
+              <label>Village / Area *</label>
               <input
                 type="text"
-                name="mobile"
-                value={formData.mobile}
+                name="village"
+                value={formData.village}
                 onChange={handleChange}
-                placeholder="10-digit mobile number"
+                placeholder="Your village or area name"
                 required
               />
-              {errors.mobile && <span className="error">{errors.mobile}</span>}
+              {errors.village && <span className="error">{errors.village}</span>}
             </div>
+
+            <div className={`form-group ${errors.email ? 'error' : ''}`}>
+              <label>Email Address *</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email address"
+                required
+              />
+              {errors.email && <span className="error">{errors.email}</span>}
+            </div>
+
+            <div className={`form-group ${errors.password ? 'error' : ''}`}>
+              <label>Password *</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a strong password"
+                required
+              />
+              {errors.password && <span className="error">{errors.password}</span>}
+            </div>
+
+            <button type="submit" disabled={loading} className="btn btn-primary">
+              {loading ? 'Registering...' : 'Register'}
+            </button>
+          </form>
+
+          <div className="auth-footer">
+            <p>Already have an account? <a href="/login">Login here</a></p>
           </div>
-
-          <div className="form-group">
-            <label>Village / Area *</label>
-            <input
-              type="text"
-              name="village"
-              value={formData.village}
-              onChange={handleChange}
-              placeholder="Your village or area name"
-              required
-            />
-            {errors.village && <span className="error">{errors.village}</span>}
-          </div>
-
-          <div className="form-group">
-            <label>Email Address *</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email address"
-              required
-            />
-            {errors.email && <span className="error">{errors.email}</span>}
-          </div>
-
-          <div className="form-group">
-            <label>Password *</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Create a strong password"
-              required
-            />
-            {errors.password && <span className="error">{errors.password}</span>}
-          </div>
-
-          <button type="submit" disabled={loading} className="btn btn-primary">
-            {loading ? 'Registering...' : 'Register'}
-          </button>
-        </form>
-
-        <div className="auth-footer">
-          <p>Already have an account? <a href="/login">Login here</a></p>
         </div>
       </div>
     </div>

@@ -1,20 +1,36 @@
-import axios from "axios";
-
-const defaultApiBase = process.env.NODE_ENV === "production"
-  ? (typeof window !== "undefined" ? window.location.origin : "http://localhost:5000")
+const fallbackApiOrigin = process.env.NODE_ENV === "production"
+  ? "https://road-complaint-and-monitoring-system.onrender.com"
   : "http://localhost:5000";
 
-const rawApiBase = process.env.REACT_APP_API_BASE_URL
-  ? process.env.REACT_APP_API_BASE_URL.trim().replace(/\/+$/g, "")
-  : defaultApiBase;
+const defaultApiOrigin = process.env.REACT_APP_API_BASE_URL
+  ? process.env.REACT_APP_API_BASE_URL.trim().replace(/\/+$/, "")
+  : (typeof window !== 'undefined' ? window.location.origin : fallbackApiOrigin);
 
-const normalizedApiOrigin = rawApiBase.replace(/\/api$/i, "");
-const apiOrigin = normalizedApiOrigin.replace(/\/+$/g, "");
-export const API_ASSET_BASE_URL = apiOrigin;
-export const API_BASE_URL = `${apiOrigin}/api`;
+const normalizedApiOrigin = defaultApiOrigin.trim().replace(/\/+$/, "").replace(/\/api$/i, "");
 
-const getAuthToken = () => {
-  const rawToken = localStorage.getItem("token") || localStorage.getItem("adminToken");
+export const API_ASSET_BASE_URL = normalizedApiOrigin;
+export const API_BASE_URL = `${normalizedApiOrigin}/api`;
+
+// User token (existing)
+const getUserToken = () => {
+  const rawToken = localStorage.getItem("token");
+
+  if (!rawToken) {
+    return "";
+  }
+
+  let cleaned = String(rawToken).trim().replace(/^"|"$/g, "");
+  cleaned = cleaned.replace(/^Bearer\s+/i, "").trim();
+  if (!cleaned || cleaned === "null" || cleaned === "undefined") {
+    return "";
+  }
+
+  return cleaned;
+};
+
+// Admin token (new)
+const getAdminToken = () => {
+  const rawToken = localStorage.getItem("adminToken");
 
   if (!rawToken) {
     return "";
@@ -30,8 +46,9 @@ const getAuthToken = () => {
 };
 
 // headers function (same rehne de)
-const getHeaders = () => {
-  const token = getAuthToken();
+// User headers (existing)
+const getUserHeaders = () => {
+  const token = getUserToken();
 
   return {
     Accept: "application/json",
@@ -39,6 +56,21 @@ const getHeaders = () => {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 };
+
+// Admin headers (new)
+const getAdminHeaders = () => {
+  const token = getAdminToken();
+
+  return {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+};
+
+// Aliases for legacy code compatibility
+const getAuthToken = getUserToken;
+const getHeaders = getUserHeaders;
 
 const handleResponse = async (response) => {
   const contentType = response.headers.get('content-type') || '';
@@ -168,19 +200,19 @@ export const adminService = {
     return handleResponse(response);
   },
 
-  getComplaints: async (filters = {}) => {
+getComplaints: async (filters = {}) => {
     const queryParams = new URLSearchParams(filters).toString();
     const response = await fetch(`${API_BASE_URL}/admin/complaints?${queryParams}`, {
       method: 'GET',
-      headers: getHeaders()
+      headers: getAdminHeaders()
     });
     return handleResponse(response);
   },
 
-  getComplaintById: async (id) => {
+getComplaintById: async (id) => {
     const response = await fetch(`${API_BASE_URL}/admin/complaints/${id}`, {
       method: 'GET',
-      headers: getHeaders()
+      headers: getAdminHeaders()
     });
     return handleResponse(response);
   },
@@ -188,7 +220,7 @@ export const adminService = {
   updateComplaintStatus: async (complaintId, status) => {
     const response = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}/status`, {
       method: 'PUT',
-      headers: getHeaders(),
+      headers: getAdminHeaders(),
       body: JSON.stringify({ status })
     });
     return handleResponse(response);
@@ -197,7 +229,7 @@ export const adminService = {
   getStats: async () => {
     const response = await fetch(`${API_BASE_URL}/admin/stats`, {
       method: 'GET',
-      headers: getHeaders()
+      headers: getAdminHeaders()
     });
     return handleResponse(response);
   },
@@ -206,7 +238,7 @@ export const adminService = {
   createAdmin: async (credentials) => {
     const response = await fetch(`${API_BASE_URL}/admin/create-admin`, {
       method: 'POST',
-      headers: getHeaders(),
+      headers: getAdminHeaders(),
       body: JSON.stringify(credentials)
     });
     return handleResponse(response);
@@ -215,7 +247,7 @@ export const adminService = {
   deleteComplaint: async (complaintId) => {
     const response = await fetch(`${API_BASE_URL}/admin/complaints/${complaintId}`, {
       method: 'DELETE',
-      headers: getHeaders()
+      headers: getAdminHeaders()
     });
     return handleResponse(response);
   },
@@ -223,7 +255,7 @@ export const adminService = {
   changePassword: async (oldPassword, newPassword) => {
     const response = await fetch(`${API_BASE_URL}/admin/change-password`, {
       method: 'PUT',
-      headers: getHeaders(),
+      headers: getAdminHeaders(),
       body: JSON.stringify({ oldPassword, newPassword })
     });
     return handleResponse(response);
@@ -232,7 +264,23 @@ export const adminService = {
   getAdmins: async () => {
     const response = await fetch(`${API_BASE_URL}/admin/admins`, {
       method: 'GET',
-      headers: getHeaders()
+      headers: getAdminHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  getUsers: async () => {
+    const response = await fetch(`${API_BASE_URL}/admin/users`, {
+      method: 'GET',
+      headers: getAdminHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  getContactMessages: async () => {
+    const response = await fetch(`${API_BASE_URL}/admin/contact-messages`, {
+      method: 'GET',
+      headers: getAdminHeaders()
     });
     return handleResponse(response);
   },
@@ -240,7 +288,7 @@ export const adminService = {
   deleteAdmin: async (adminId) => {
     const response = await fetch(`${API_BASE_URL}/admin/admins/${adminId}`, {
       method: 'DELETE',
-      headers: getHeaders()
+      headers: getAdminHeaders()
     });
     return handleResponse(response);
   },
@@ -248,7 +296,19 @@ export const adminService = {
   getProfile: async () => {
     const response = await fetch(`${API_BASE_URL}/admin/profile`, {
       method: 'GET',
-      headers: getHeaders()
+      headers: getAdminHeaders()
+    });
+    return handleResponse(response);
+  }
+};
+
+// Contact Service
+export const contactService = {
+  sendMessage: async (message) => {
+    const response = await fetch(`${API_BASE_URL}/contact/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(message)
     });
     return handleResponse(response);
   }

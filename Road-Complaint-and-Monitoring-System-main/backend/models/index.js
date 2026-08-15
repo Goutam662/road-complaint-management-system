@@ -1,6 +1,7 @@
 const User = require("./User");
 const Admin = require("./Admin");
 const Complaint = require("./Complaint");
+const ContactMessage = require("./ContactMessage");
 const AuditLog = require("./AuditLog");
 const EmailVerification = require("./EmailVerification");
 const ResetToken = require("./ResetToken");
@@ -15,6 +16,7 @@ module.exports = {
   User,
   Admin,
   Complaint,
+  ContactMessage,
   AuditLog,
   EmailVerification,
   ResetToken

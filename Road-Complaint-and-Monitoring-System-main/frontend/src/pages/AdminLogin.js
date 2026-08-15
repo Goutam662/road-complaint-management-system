@@ -23,8 +23,8 @@ const AdminLogin = () => {
     try {
       const response = await adminService.login(formData);
       adminLogin(response.admin, response.token);
-      // replace history so previous (public) pages are not reachable via back
-      navigate('/admin/profile', { replace: true });
+      // send admins straight to the complaint dashboard after login
+      navigate('/admin', { replace: true });
     } catch (error) {
       setError(error.message || 'Admin login failed');
     } finally {

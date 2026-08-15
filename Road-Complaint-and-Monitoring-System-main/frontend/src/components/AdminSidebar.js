@@ -32,6 +32,12 @@ const AdminSidebar = () => {
           👥 Users
         </Link>
         <Link 
+          to="/admin/contact-messages" 
+          className={`sidebar-item ${isActive('/admin/contact-messages') ? 'active' : ''}`}
+        >
+          ✉️ Contact Messages
+        </Link>
+        <Link 
           to="/admin/reports" 
           className={`sidebar-item ${isActive('/admin/reports') ? 'active' : ''}`}
         >
