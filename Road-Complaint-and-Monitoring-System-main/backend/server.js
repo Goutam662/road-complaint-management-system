@@ -99,7 +99,7 @@ const start = async () => {
 
     const username = process.env.SUPER_ADMIN_USERNAME || "admin";
     const password = process.env.SUPER_ADMIN_PASSWORD || "admin123";
-    const existingSuperAdmin = await Admin.findOne({ username });
+    const existingSuperAdmin = await Admin.findOne({ where: { username } });
 
     if (!existingSuperAdmin) {
       const hashed = await bcrypt.hash(password, 10);
