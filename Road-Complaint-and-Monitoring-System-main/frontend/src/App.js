@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import MapView from './pages/MapView';
 import Contact from './pages/Contact';
@@ -23,17 +24,17 @@ import AdminUsers from './pages/AdminUsers';
 import AdminReports from './pages/AdminReports';
 import AdminSidebar from './components/AdminSidebar';
 import './styles/global.css';
-
+ 
 const AdminLayout = ({ children }) => (
   <div className="admin-layout">
     <AdminSidebar />
     <main className="admin-main-content">{children}</main>
   </div>
 );
-
+ 
 const AppShell = () => {
   const { settings } = useSiteSettings();
-
+ 
   return (
     <div
       className="App"
@@ -48,6 +49,7 @@ const AppShell = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/map" element={<MapView />} />
@@ -69,7 +71,7 @@ const AppShell = () => {
     </div>
   );
 };
-
+ 
 function App() {
   return (
     <AuthProvider>
@@ -83,6 +85,5 @@ function App() {
     </AuthProvider>
   );
 }
-
+ 
 export default App;
-
